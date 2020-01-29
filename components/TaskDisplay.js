@@ -69,7 +69,13 @@ export default function TaskDisplay({ todos, setTodo }) {
               <View style={styles.itemFlex}>
                 <View style={styles.flexInner}>
                   <View>
-                    <Text style={styles.TextFont}>{item.task} </Text>
+                    <Text
+                      style={[
+                        item.isCancel ? styles.cancelText : styles.TextFont
+                      ]}
+                    >
+                      {item.task}{" "}
+                    </Text>
                     <View style={styles.DisplayFlex}>
                       <Text style={styles.TextDate}>{item.date}</Text>
                       <Text style={styles.TextDate}>{item.time}</Text>
@@ -138,7 +144,8 @@ const styles = StyleSheet.create({
   DisplayFlex: {
     marginTop: 10,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    width: 200
   },
 
   itemHero: {
@@ -149,5 +156,11 @@ const styles = StyleSheet.create({
     width: "100%",
     fontSize: 20,
     color: Color.deepGreen
+  },
+  cancelText: {
+    width: "100%",
+    fontSize: 20,
+    color: Color.gray,
+    textDecorationLine: "line-through"
   }
 });
