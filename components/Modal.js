@@ -12,7 +12,7 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import Btn from "./buttons";
+import Btn from "./AddBtn";
 import CalendarDate from "./Date";
 import CalendarTime from "./Time";
 import InputText from "./InputText";
@@ -21,7 +21,11 @@ import Color from "../constants/Colors";
 export default function ModalComp({ setTodo, setTask, task, todos }) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  // console.log(task);
+  const onSave = e => {
+    e.preventDefault;
+    setTodo([...todos, task, (isCancel = false)]);
+    setModalVisible(!modalVisible);
+  };
 
   return (
     <View style={styles.container}>
@@ -42,14 +46,7 @@ export default function ModalComp({ setTodo, setTask, task, todos }) {
               <CalendarTime setTask={setTask} task={task} />
             </View>
             <View style={styles.SaveCancelBtn}>
-              <Button
-                color={Color.green}
-                title="Save"
-                onPress={() => {
-                  setTodo([...todos, task, (isCancel = false)]);
-                  setModalVisible(!modalVisible);
-                }}
-              />
+              <Button color={Color.green} title="Save" onPress={onSave} />
               <Button
                 title="cancel"
                 color="red"
