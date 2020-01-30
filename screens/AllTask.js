@@ -1,31 +1,23 @@
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { useSelector } from "react-redux";
 
-export default function HomeScreen() {
+import { StyleSheet, View, Text } from "react-native";
+
+import TaskDisplay from "../components/TaskDisplay";
+import Color from "../constants/Colors";
+
+export default function AllTask() {
+  const taskData = useSelector(state => state.taskList);
+  const realTask = taskData.filter(item => item.taskInput !== undefined);
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <View style={styles.welcomeContainer}>
-          <Text>ALL TASK HERE..</Text>
-        </View>
-      </ScrollView>
+      <Text style={styles.text}>ALL TASK</Text>
+      <TaskDisplay taskData={realTask} />
     </View>
   );
 }
-
-HomeScreen.navigationOptions = {
+AllTask.navigationOptions = {
   header: null
 };
 
@@ -33,5 +25,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff"
+  },
+  text: {
+    fontSize: 30,
+    textAlign: "center",
+    marginTop: 10,
+    color: Color.green
   }
 });
