@@ -58,7 +58,7 @@ export default class CalendarDDate extends Component {
 
   render() {
     const { show, date, newDate, mode } = this.state;
-    console.log(show, date, mode);
+    // console.log(show, date, mode);
 
     return (
       <View style={styles.container}>
