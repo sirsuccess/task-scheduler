@@ -1,8 +1,8 @@
 import * as WebBrowser from "expo-web-browser";
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,9 +14,16 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Color from "../constants/Colors";
+import { deleteTaskAction, cancelTaskAction } from "../redux/Action/action";
 
-export default function TaskDisplay({ todos, setTodo }) {
-  const canceItem = (item, id) => {
+export default function TaskDisplay({ taskData }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    canceItem;
+  }, []);
+
+  const canceItem = (item, index, key) => {
     Alert.alert(
       "CANCEL TASK",
       `Do you want to cancel "${item}"`,
@@ -28,15 +35,14 @@ export default function TaskDisplay({ todos, setTodo }) {
         {
           text: "OK",
           onPress: () => {
-            todos[id].isCancel = true;
-            console.log("OK Pressed", todos);
+            dispatch(cancelTaskAction(index));
           }
         }
       ],
       { cancelable: true }
     );
   };
-  const deleteItem = (item, id) => {
+  const deleteItem = (item, key) => {
     Alert.alert(
       "DELETE TASK",
       `Do you want to delete "${item}"`,
@@ -48,9 +54,7 @@ export default function TaskDisplay({ todos, setTodo }) {
         {
           text: "OK",
           onPress: () => {
-            const filterDelet = todos.filter(() => todos[id] !== id);
-            setTodo(filterDelet);
-            console.log("OK Pressed", todos);
+            dispatch(deleteTaskAction(key));
           }
         }
       ],
@@ -62,10 +66,10 @@ export default function TaskDisplay({ todos, setTodo }) {
     <ScrollView>
       <View style={styles.itemHero}>
         <FlatList
-          data={todos}
-          keyExtractor={item => `${item.date}${item.time}`}
+          data={taskData}
+          keyExtractor={item => item.key}
           renderItem={({ item, index }) => (
-            <TouchableOpacity onPress={() => routeHandler(item)}>
+            <TouchableOpacity>
               <View style={styles.itemFlex}>
                 <View style={styles.flexInner}>
                   <View>
@@ -74,7 +78,7 @@ export default function TaskDisplay({ todos, setTodo }) {
                         item.isCancel ? styles.cancelText : styles.TextFont
                       ]}
                     >
-                      {item.task}{" "}
+                      {item.taskInput}
                     </Text>
                     <View style={styles.DisplayFlex}>
                       <Text style={styles.TextDate}>{item.date}</Text>
@@ -83,7 +87,8 @@ export default function TaskDisplay({ todos, setTodo }) {
                   </View>
                   <View>
                     <TouchableOpacity
-                      onPress={() => canceItem(item.task, index)}
+                      onPress={() => canceItem(item.taskInput, index, item.key)}
+                      style={[item.isCancel ? styles.displayNone : ""]}
                     >
                       <MaterialCommunityIcons
                         name="cancel"
@@ -92,7 +97,7 @@ export default function TaskDisplay({ todos, setTodo }) {
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => deleteItem(item.task, index)}
+                      onPress={() => deleteItem(item.taskInput, item.key)}
                     >
                       <MaterialCommunityIcons
                         name="delete-forever"
@@ -162,5 +167,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: Color.gray,
     textDecorationLine: "line-through"
+  },
+  displayNone: {
+    display: "none"
   }
 });
