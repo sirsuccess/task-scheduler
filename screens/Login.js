@@ -34,7 +34,7 @@ export default function Login({ navigation }) {
               title="Login"
               widt={150}
               navigation={navigation}
-              distination={"screen"}
+              distination={"Main"}
             />
             <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
               <Text style={styles.SignUp}>Sign Up</Text>
