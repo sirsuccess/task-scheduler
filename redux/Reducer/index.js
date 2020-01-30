@@ -1,5 +1,5 @@
 import produce from "immer";
-import { ADD_TASK, DELETE_TASK, CANCEL_TASK } from "../Action/types";
+import { ADD_TASK, DELETE_TASK, CANCEL_TASK, SORT_TASK } from "../Action/types";
 const InitialTask = {
   taskList: []
 };
@@ -21,6 +21,13 @@ const taskReducer = (state = InitialTask, action) => {
       return {
         ...state,
         taskList: state.taskList.filter(item => item.key !== action.key)
+      };
+    case SORT_TASK:
+      return {
+        ...state,
+        taskList: state.taskList.sort(
+          (first, second) => second.date - first.date
+        )
       };
 
     default:

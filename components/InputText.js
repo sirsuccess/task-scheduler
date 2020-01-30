@@ -15,6 +15,7 @@ export default function inputText({ setNewText }) {
       <TextInput
         placeholder="Task here ..."
         name="task"
+        value={text}
         keyboardType="default"
         multiline={true}
         onChangeText={handleChange}

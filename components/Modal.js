@@ -18,7 +18,7 @@ import CalendarDate from "./Date";
 import CalendarTime from "./Time";
 import InputText from "./InputText";
 import Color from "../constants/Colors";
-import { addTaskAction, deleteTask, cancelTask } from "../redux/Action/action";
+import { addTaskAction } from "../redux/Action/action";
 
 export default function ModalComp() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,7 +32,8 @@ export default function ModalComp() {
   const dispatch = useDispatch();
   const [task, setTask] = useState(InitialTodo);
 
-  let setNewText = text => setTask({ ...task, taskInput: text });
+  let setNewText = text =>
+    setTask({ ...task, taskInput: text, isCancel: false, key: Math.random() });
   return (
     <View style={styles.container}>
       <Modal

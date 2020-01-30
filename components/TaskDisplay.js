@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -20,8 +18,9 @@ import { deleteTaskAction, cancelTaskAction } from "../redux/Action/action";
 
 export default function TaskDisplay({ taskData }) {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    canceItem();
+    canceItem;
   }, []);
 
   const canceItem = (item, index, key) => {
@@ -37,7 +36,6 @@ export default function TaskDisplay({ taskData }) {
           text: "OK",
           onPress: () => {
             dispatch(cancelTaskAction(index));
-            // console.log("OK Pressed", todos);
           }
         }
       ],
@@ -57,7 +55,6 @@ export default function TaskDisplay({ taskData }) {
           text: "OK",
           onPress: () => {
             dispatch(deleteTaskAction(key));
-            // console.log("OK Pressed", todos);
           }
         }
       ],
@@ -70,7 +67,7 @@ export default function TaskDisplay({ taskData }) {
       <View style={styles.itemHero}>
         <FlatList
           data={taskData}
-          keyExtractor={item => `${item.date}${item.time}`}
+          keyExtractor={item => item.key}
           renderItem={({ item, index }) => (
             <TouchableOpacity>
               <View style={styles.itemFlex}>
@@ -91,6 +88,7 @@ export default function TaskDisplay({ taskData }) {
                   <View>
                     <TouchableOpacity
                       onPress={() => canceItem(item.taskInput, index, item.key)}
+                      style={[item.isCancel ? styles.displayNone : ""]}
                     >
                       <MaterialCommunityIcons
                         name="cancel"
@@ -169,5 +167,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: Color.gray,
     textDecorationLine: "line-through"
+  },
+  displayNone: {
+    display: "none"
   }
 });
