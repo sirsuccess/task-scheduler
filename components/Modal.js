@@ -1,4 +1,5 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 import {
   Modal,
   Text,
@@ -17,16 +18,21 @@ import CalendarDate from "./Date";
 import CalendarTime from "./Time";
 import InputText from "./InputText";
 import Color from "../constants/Colors";
+import { addTaskAction, deleteTask, cancelTask } from "../redux/Action/action";
 
-export default function ModalComp({ setTodo, setTask, task, todos }) {
+export default function ModalComp() {
   const [modalVisible, setModalVisible] = useState(false);
-
-  const onSave = e => {
-    e.preventDefault;
-    setTodo([...todos, task, (isCancel = false)]);
-    setModalVisible(!modalVisible);
+  const InitialTodo = {
+    taskInput: "i want to code",
+    time: "12pm",
+    date: "1/12/2020",
+    isCancel: false,
+    key: Math.random()
   };
+  const dispatch = useDispatch();
+  const [task, setTask] = useState(InitialTodo);
 
+  let setNewText = text => setTask({ ...task, taskInput: text });
   return (
     <View style={styles.container}>
       <Modal
@@ -40,13 +46,20 @@ export default function ModalComp({ setTodo, setTask, task, todos }) {
         <View style={styles.container}>
           <View>
             <Text>New Todo</Text>
-            <InputText setTask={setTask} />
+            <InputText setNewText={setNewText} task={task} />
             <View style={styles.Date}>
               <CalendarDate setTask={setTask} task={task} />
               <CalendarTime setTask={setTask} task={task} />
             </View>
             <View style={styles.SaveCancelBtn}>
-              <Button color={Color.green} title="Save" onPress={onSave} />
+              <Button
+                color={Color.green}
+                title="Save"
+                onPress={() => {
+                  dispatch(addTaskAction(task));
+                  setModalVisible(!modalVisible);
+                }}
+              />
               <Button
                 title="cancel"
                 color="red"

@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 
 import Color from "../constants/Colors";
 
-export default function inputText({ setTask }) {
-  const handleChange = e => {
-    setTask();
+export default function inputText({ setNewText }) {
+  const [text, setText] = useState("");
+  const handleChange = task => {
+    setText(task);
+    setNewText(text);
   };
 
   return (
@@ -15,9 +17,7 @@ export default function inputText({ setTask }) {
         name="task"
         keyboardType="default"
         multiline={true}
-        onChangeText={task => {
-          setTask({ ...task, task });
-        }}
+        onChangeText={handleChange}
       />
     </View>
   );

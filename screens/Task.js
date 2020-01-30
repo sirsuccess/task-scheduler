@@ -1,5 +1,7 @@
 import * as WebBrowser from "expo-web-browser";
 import React, { useState, useEffect } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
+
 import {
   Image,
   Platform,
@@ -16,28 +18,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Modal from "../components/Modal";
 import Color from "../constants/Colors";
 import TaskDisplay from "../components/TaskDisplay";
+import { addTask, deleteTask, cancelTask } from "../redux/Action/action";
 
-export default function HomeScreen() {
-  const InitialTodo = {
-    taskInput: "i want to code",
-    time: "12pm",
-    date: "1/12/2020",
-    isCancel: false
-  };
-  const [task, setTask] = useState(InitialTodo);
-  const [todos, setTodo] = useState([task]);
-
-  useEffect(() => {}, [todos]);
-  // useEffect(() => {
-  //   // const byDate = todos.slice(0, todos.length);
-  //   // console.log("by date:", byDate);
-  //   // const sortTask = byDate.sort(function(a, b) {
-  //   //   return a.date - b.date;
-  //   // });
-  //   // setTodo(sortTask);
-  //   // console.log("this is date", sortTask);
-  // }, [todos]);
-  console.log(todos);
+function HomeScreen() {
+  const taskData = useSelector(state => state.taskList);
 
   return (
     <View style={styles.container}>
@@ -57,12 +41,28 @@ export default function HomeScreen() {
           />
         </TouchableOpacity>
       </View>
-      <TaskDisplay todos={todos} setTodo={setTodo} />
-      <Modal setTodo={setTodo} setTask={setTask} task={task} todos={todos} />
+      <TaskDisplay taskData={taskData} />
+      <Modal />
     </View>
   );
 }
+HomeScreen.navigationOptions = {
+  header: null
+};
+const mapStateToProps = state => {
+  console.log("this state is from redux", state.taskList);
 
+  return {
+    tasks: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    delete: key => dispatch(deleteTask(key))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -76,7 +76,3 @@ const styles = StyleSheet.create({
     width: 80
   }
 });
-
-HomeScreen.navigationOptions = {
-  header: null
-};
